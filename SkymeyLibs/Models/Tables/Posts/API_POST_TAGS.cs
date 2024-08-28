@@ -14,7 +14,7 @@ namespace SkymeyLibs.Models.Tables.Posts
     {
         [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
         [JsonPropertyName("_id")]
-        public ObjectId? _id { get; set; }
+        public ObjectId? _id { get; set; } = ObjectId.GenerateNewId();
         public ObjectId? POST_ID { get; set; }
         public string Title { get; set; }
     }
