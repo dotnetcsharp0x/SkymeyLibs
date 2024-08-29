@@ -3,7 +3,7 @@
 Before starting the project, put the following file into the project directory:
 
 appsettings.json
-```csharp
+```json
 {
   "Logging": {
     "LogLevel": {
@@ -19,6 +19,8 @@ appsettings.json
     }
     }
 }
+```
+```csharp
 /*
 "DBName": "dbname" = database name
 "DBServer": "mongodb://127.0.0.1:27017" = server ip
