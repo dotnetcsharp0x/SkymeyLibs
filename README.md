@@ -1,5 +1,7 @@
 # SkymeyLibs
 
+Before starting the project, put the following file into the project directory:
+
 appsettings.json
 ```csharp
 {
