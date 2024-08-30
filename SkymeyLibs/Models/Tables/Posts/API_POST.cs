@@ -21,6 +21,7 @@ namespace SkymeyLibs.Models.Tables.Posts
         public string Description { get; set; }
         public string Content { get; set; }
         public string Type { get; set; }
+        public string How_To_Send { get; set; }
         public string API_URL { get; set; }
         public DateTime DateCreate { get; set; } = DateTime.UtcNow;
         public DateTime DateUpdate { get; set; } = DateTime.UtcNow;
