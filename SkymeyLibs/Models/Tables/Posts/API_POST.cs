@@ -16,14 +16,22 @@ namespace SkymeyLibs.Models.Tables.Posts
     {
         [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
         [JsonPropertyName("_id")]
-        public ObjectId? _id { get; set; } = ObjectId.GenerateNewId();
+        public ObjectId? _id { get; set; }
+        [JsonPropertyName("Title")]
         public string Title { get; set; }
+        [JsonPropertyName("Description")]
         public string Description { get; set; }
+        [JsonPropertyName("Content")]
         public string Content { get; set; }
-        public string Type { get; set; }
+        [JsonPropertyName("Type")]
+        public string Type { get; set; } = "GET";
+        [JsonPropertyName("How_To_Send")]
         public string How_To_Send { get; set; }
+        [JsonPropertyName("API_URL")]
         public string API_URL { get; set; }
+        [JsonPropertyName("DateCreate")]
         public DateTime DateCreate { get; set; } = DateTime.UtcNow;
+        [JsonPropertyName("DateUpdate")]
         public DateTime DateUpdate { get; set; } = DateTime.UtcNow;
     }
 }
