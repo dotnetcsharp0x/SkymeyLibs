@@ -22,7 +22,7 @@ namespace SkymeyLibs.Models.Tables.Posts
         [JsonPropertyName("Description")]
         public string Description { get; set; }
         [JsonPropertyName("Content")]
-        public string Content { get; set; }
+        public string? Content { get; set; }
         [JsonPropertyName("Type")]
         public string Type { get; set; } = "GET";
         [JsonPropertyName("How_To_Send")]
