@@ -17,6 +17,7 @@ namespace SkymeyLibs.Interfaces.Data
     {
         Task<HttpStatusCode> CreatePost(POST_VIEW_MODEL VIEW_MODEL);
         Task<IEnumerable<API_TOKEN>> GetTokens();
+        Task<List<TokenList>> GetTokenList();
         Task<bool> AddToken(API_TOKEN token);
     }
 }

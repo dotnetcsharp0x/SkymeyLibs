@@ -11,6 +11,8 @@ using SkymeyLibs.Models.Tables.Posts;
 using System.Net;
 using Microsoft.Extensions.Options;
 using SkymeyLibs.Models.Tables.Tokens;
+using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SkymeyLibs.Data
 {
@@ -28,7 +30,21 @@ namespace SkymeyLibs.Data
         }
         public async Task<IEnumerable<API_TOKEN>> GetTokens()
         {
-            return (from i in _db.API_TOKEN select i);
+            return (from i in _db.API_TOKEN select i).AsNoTracking();
+        }
+        public async Task<List<TokenList>> GetTokenList()
+        {
+            var tokens = (from i in _db.API_TOKEN select i).AsNoTracking().ToList();
+            var prices = (from i in _db.CurrentPrices select i).AsNoTracking().ToList();
+            TokenListViewModel tokensList = new TokenListViewModel { CurrentPricess = prices,TokenLists = tokens};
+            var resp = (from i in tokensList.TokenLists join ic in tokensList.CurrentPricess on i.Symbol+"USDT" equals ic.Ticker select new TokenList { 
+                Symbol = i.Symbol,
+                Name = i.Name,
+                Price = ic.Price.ToString(),
+                tfhc="0",
+                sdc="0"
+            }).ToList();
+            return resp;
         }
         public async Task<bool> AddToken(API_TOKEN token)
         {
