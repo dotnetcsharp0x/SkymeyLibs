@@ -15,6 +15,7 @@ namespace SkymeyLibs.Data
         public DbSet<API_POST_CODE_SAMPLES> API_POST_CODE_SAMPLES { get; init; }
         public DbSet<API_TOKEN> API_TOKEN { get; init; }
         public DbSet<CurrentPrices> CurrentPrices { get; init; }
+        public DbSet<TokenList> crypto_index_page_tokens { get; init; }
         public static ApplicationMongoContext Create(IMongoDatabase database) =>
             new(new DbContextOptionsBuilder<ApplicationMongoContext>()
                 .UseMongoDB(database.Client, database.DatabaseNamespace.DatabaseName)
@@ -33,6 +34,7 @@ namespace SkymeyLibs.Data
             modelBuilder.Entity<API_POST_CODE_SAMPLES>().ToCollection("API_POST_CODE_SAMPLES");
             modelBuilder.Entity<API_TOKEN>().ToCollection("crypto_tokens");
             modelBuilder.Entity<CurrentPrices>().ToCollection("crypto_current_prices");
+            modelBuilder.Entity<TokenList>().ToCollection("crypto_index_page_tokens");
         }
     }
 }

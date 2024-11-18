@@ -26,80 +26,81 @@ namespace SkymeyLibs.Data
         {
             _options = options;
             client = new MongoClient(_options.Value.MongoDatabase.DBServer);
-            _db = ApplicationMongoContext.Create(client.GetDatabase(_options.Value.MongoDatabase.DBName));
         }
         public async Task<IEnumerable<API_TOKEN>> GetTokens()
         {
-            return (from i in _db.API_TOKEN select i).AsNoTracking();
+            using (var _db = ApplicationMongoContext.Create(client.GetDatabase(_options.Value.MongoDatabase.DBName)))
+            {
+                return (from i in _db.API_TOKEN select i).AsNoTracking();
+            }
         }
         public async Task<List<TokenList>> GetTokenList()
         {
-            var tokens = (from i in _db.API_TOKEN select i).AsNoTracking().ToList();
-            var prices = (from i in _db.CurrentPrices select i).AsNoTracking().ToList();
-            TokenListViewModel tokensList = new TokenListViewModel { CurrentPricess = prices,TokenLists = tokens};
-            var resp = (from i in tokensList.TokenLists join ic in tokensList.CurrentPricess on i.Symbol+"USDT" equals ic.Ticker select new TokenList { 
-                Symbol = i.Symbol,
-                Name = i.Name,
-                Price = ic.Price.ToString(),
-                tfhc="0",
-                sdc="0"
-            }).ToList();
-            return resp;
+            using (var _db = ApplicationMongoContext.Create(client.GetDatabase(_options.Value.MongoDatabase.DBName)))
+            {
+                return await (from i in _db.crypto_index_page_tokens select i).ToListAsync();
+            }
         }
         public async Task<bool> AddToken(API_TOKEN token)
         {
-            token._id = ObjectId.GenerateNewId();
-            await _db.API_TOKEN.AddAsync(token);
-            await _db.SaveChangesAsync();
-            return true;
+            using (var _db = ApplicationMongoContext.Create(client.GetDatabase(_options.Value.MongoDatabase.DBName)))
+            {
+                token._id = ObjectId.GenerateNewId();
+                await _db.API_TOKEN.AddAsync(token);
+                await _db.SaveChangesAsync();
+                return true;
+            }
         }
         public async Task<HttpStatusCode> CreatePost(POST_VIEW_MODEL VIEW_MODEL)
         {
             try
             {
-                Console.WriteLine("1");
+                using (var _db = ApplicationMongoContext.Create(client.GetDatabase(_options.Value.MongoDatabase.DBName)))
+                {
+                    Console.WriteLine("1");
                     VIEW_MODEL.API_POST._id = ObjectId.GenerateNewId();
                     await _db.API_POST.AddAsync(VIEW_MODEL.API_POST);
-                await _db.SaveChangesAsync();
-                //_db.SaveChanges();
-                foreach (var item in VIEW_MODEL.API_POST_TAGS)
+                    await _db.SaveChangesAsync();
+                    //_db.SaveChanges();
+                    foreach (var item in VIEW_MODEL.API_POST_TAGS)
                     {
                         item._id = ObjectId.GenerateNewId();
                         item.POST_ID = VIEW_MODEL.API_POST._id;
                     }
-                Console.WriteLine("2");
-                await _db.API_POST_TAGS.AddRangeAsync(VIEW_MODEL.API_POST_TAGS);
-                await _db.SaveChangesAsync();
-                //_db.SaveChanges();
-                foreach (var item in VIEW_MODEL.API_POST_RESPONSES)
+                    Console.WriteLine("2");
+                    await _db.API_POST_TAGS.AddRangeAsync(VIEW_MODEL.API_POST_TAGS);
+                    await _db.SaveChangesAsync();
+                    //_db.SaveChanges();
+                    foreach (var item in VIEW_MODEL.API_POST_RESPONSES)
                     {
                         item._id = ObjectId.GenerateNewId();
                         item.POST_ID = VIEW_MODEL.API_POST._id;
                     }
-                Console.WriteLine("3");
-                await _db.API_POST_RESPONSES.AddRangeAsync(VIEW_MODEL.API_POST_RESPONSES);
-                await _db.SaveChangesAsync();
-                //_db.SaveChanges();
-                foreach (var item in VIEW_MODEL.API_POST_PARAMS)
+                    Console.WriteLine("3");
+                    await _db.API_POST_RESPONSES.AddRangeAsync(VIEW_MODEL.API_POST_RESPONSES);
+                    await _db.SaveChangesAsync();
+                    //_db.SaveChanges();
+                    foreach (var item in VIEW_MODEL.API_POST_PARAMS)
                     {
                         item._id = ObjectId.GenerateNewId();
                         item.POST_ID = VIEW_MODEL.API_POST._id;
                     }
-                Console.WriteLine("4");
-                await _db.API_POST_PARAMS.AddRangeAsync(VIEW_MODEL.API_POST_PARAMS);
-                await _db.SaveChangesAsync();
-                //_db.SaveChangesAsync();
-                foreach (var item in VIEW_MODEL.API_POST_CODE_SAMPLES)
+                    Console.WriteLine("4");
+                    await _db.API_POST_PARAMS.AddRangeAsync(VIEW_MODEL.API_POST_PARAMS);
+                    await _db.SaveChangesAsync();
+                    //_db.SaveChangesAsync();
+                    foreach (var item in VIEW_MODEL.API_POST_CODE_SAMPLES)
                     {
                         item._id = ObjectId.GenerateNewId();
                         item.POST_ID = VIEW_MODEL.API_POST._id;
                     }
-                Console.WriteLine("5");
-                await _db.API_POST_CODE_SAMPLES.AddRangeAsync(VIEW_MODEL.API_POST_CODE_SAMPLES);
-                await _db.SaveChangesAsync();
-                Console.WriteLine("6");
-                
-                Console.WriteLine("7");
+                    Console.WriteLine("5");
+                    await _db.API_POST_CODE_SAMPLES.AddRangeAsync(VIEW_MODEL.API_POST_CODE_SAMPLES);
+                    await _db.SaveChangesAsync();
+                    Console.WriteLine("6");
+
+                    Console.WriteLine("7");
+                }
             }
             catch (Exception ex)
             {
