@@ -15,7 +15,6 @@ namespace SkymeyLibs.Models.User
         [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
         [JsonPropertyName("_id")]
         public ObjectId? _id { get; set; }
-        public int SG010_Id { get; set; }
         public int SG010_Group_Nr { get; set; }
         public string SU010_Name { get; set; }
     }
