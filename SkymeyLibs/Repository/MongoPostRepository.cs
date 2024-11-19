@@ -26,37 +26,32 @@ namespace SkymeyLibs.Data
         {
             _options = options;
             client = new MongoClient(_options.Value.MongoDatabase.DBServer);
+            _db = ApplicationMongoContext.Create(client.GetDatabase(_options.Value.MongoDatabase.DBName));
         }
         public async Task<IEnumerable<API_TOKEN>> GetTokens()
         {
-            using (var _db = ApplicationMongoContext.Create(client.GetDatabase(_options.Value.MongoDatabase.DBName)))
-            {
                 return (from i in _db.API_TOKEN select i).AsNoTracking();
-            }
+            
         }
         public async Task<List<TokenList>> GetTokenList()
         {
-            using (var _db = ApplicationMongoContext.Create(client.GetDatabase(_options.Value.MongoDatabase.DBName)))
-            {
+           
                 return await (from i in _db.crypto_index_page_tokens select i).ToListAsync();
-            }
+            
         }
         public async Task<bool> AddToken(API_TOKEN token)
         {
-            using (var _db = ApplicationMongoContext.Create(client.GetDatabase(_options.Value.MongoDatabase.DBName)))
-            {
                 token._id = ObjectId.GenerateNewId();
                 await _db.API_TOKEN.AddAsync(token);
                 await _db.SaveChangesAsync();
                 return true;
-            }
+            
         }
         public async Task<HttpStatusCode> CreatePost(POST_VIEW_MODEL VIEW_MODEL)
         {
             try
             {
-                using (var _db = ApplicationMongoContext.Create(client.GetDatabase(_options.Value.MongoDatabase.DBName)))
-                {
+                
                     Console.WriteLine("1");
                     VIEW_MODEL.API_POST._id = ObjectId.GenerateNewId();
                     await _db.API_POST.AddAsync(VIEW_MODEL.API_POST);
@@ -100,7 +95,7 @@ namespace SkymeyLibs.Data
                     Console.WriteLine("6");
 
                     Console.WriteLine("7");
-                }
+                
             }
             catch (Exception ex)
             {

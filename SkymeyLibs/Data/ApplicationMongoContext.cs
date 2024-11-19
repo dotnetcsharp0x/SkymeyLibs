@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using MongoDB.EntityFrameworkCore.Extensions;
 using SkymeyLibs.Models.Tables.Posts;
 using SkymeyLibs.Models.Tables.Tokens;
+using SkymeyLibs.Models.User;
 
 namespace SkymeyLibs.Data
 {
@@ -16,6 +17,9 @@ namespace SkymeyLibs.Data
         public DbSet<API_TOKEN> API_TOKEN { get; init; }
         public DbSet<CurrentPrices> CurrentPrices { get; init; }
         public DbSet<TokenList> crypto_index_page_tokens { get; init; }
+        public DbSet<SU_001> SU_001 { get; init; }
+        public DbSet<SG_001> SG_001 { get; init; }
+        public DbSet<SG_010> SG_010 { get; init; }
         public static ApplicationMongoContext Create(IMongoDatabase database) =>
             new(new DbContextOptionsBuilder<ApplicationMongoContext>()
                 .UseMongoDB(database.Client, database.DatabaseNamespace.DatabaseName)
@@ -34,6 +38,10 @@ namespace SkymeyLibs.Data
             modelBuilder.Entity<API_POST_CODE_SAMPLES>().ToCollection("API_POST_CODE_SAMPLES");
             modelBuilder.Entity<API_TOKEN>().ToCollection("crypto_tokens");
             modelBuilder.Entity<CurrentPrices>().ToCollection("crypto_current_prices");
+            modelBuilder.Entity<TokenList>().ToCollection("crypto_index_page_tokens");
+            modelBuilder.Entity<SU_001>().ToCollection("SU_001");
+            modelBuilder.Entity<SG_001>().ToCollection("SG_001");
+            modelBuilder.Entity<SG_010>().ToCollection("SG_010");
             modelBuilder.Entity<TokenList>().ToCollection("crypto_index_page_tokens");
         }
     }
