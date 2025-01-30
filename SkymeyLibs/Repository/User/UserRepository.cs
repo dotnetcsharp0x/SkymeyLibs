@@ -6,7 +6,6 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Configuration;
 using SkymeyLibs.Interfaces.Data;
-using Microsoft.AspNetCore.Mvc;
 using SkymeyLibs.Models.Tables.Posts;
 using System.Net;
 using Microsoft.Extensions.Options;
