@@ -12,6 +12,9 @@ using Microsoft.Extensions.Options;
 using SkymeyLibs.Models.Tables.Tokens;
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using SkymeyLibs.Models.Tables.Bonds;
+using SkymeyLibs.Models.Tables.Stocks;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace SkymeyLibs.Data
 {
@@ -29,22 +32,53 @@ namespace SkymeyLibs.Data
         }
         public async Task<IEnumerable<API_TOKEN>> GetTokens()
         {
-                return (from i in _db.API_TOKEN select i).AsNoTracking();
-            
+            return (from i in _db.API_TOKEN select i).AsNoTracking();
+        }
+        public async Task<IEnumerable<stock_bonds>> GetBonds()
+        {
+            return (from i in _db.stock_bonds select i).AsNoTracking();
+        }
+        public async Task<IEnumerable<stock_stocks>> GetStocks()
+        {
+            return (from i in _db.stock_stocks select i).AsNoTracking();
+        }
+        public async Task<IEnumerable<stock_bonds>> GetBondsParams(int skip, int take)
+        {
+            return (from i in _db.stock_bonds select i).Skip(skip).Take(take).AsNoTracking();
+        }
+        public async Task<IEnumerable<stock_stocks>> GetStocksParams(int skip, int take)
+        {
+            return (from i in _db.stock_stocks select i).Skip(skip).Take(take).AsNoTracking();
         }
         public async Task<List<TokenList>> GetTokenList()
         {
            
-                return await (from i in _db.crypto_index_page_tokens select i).ToListAsync();
+            return await (from i in _db.crypto_index_page_tokens select i).ToListAsync();
             
         }
         public async Task<bool> AddToken(API_TOKEN token)
         {
-                token._id = ObjectId.GenerateNewId();
-                await _db.API_TOKEN.AddAsync(token);
-                await _db.SaveChangesAsync();
-                return true;
-            
+            token._id = ObjectId.GenerateNewId();
+            await _db.API_TOKEN.AddAsync(token);
+            await _db.SaveChangesAsync();
+            return true;
+
+        }
+        public async Task<bool> AddBond(stock_bonds bond)
+        {
+            bond._id = ObjectId.GenerateNewId();
+            await _db.stock_bonds.AddAsync(bond);
+            await _db.SaveChangesAsync();
+            return true;
+
+        }
+        public async Task<bool> AddStock(stock_stocks stock)
+        {
+            stock._id = ObjectId.GenerateNewId();
+            await _db.stock_stocks.AddAsync(stock);
+            await _db.SaveChangesAsync();
+            return true;
+
         }
         public async Task<HttpStatusCode> CreatePost(POST_VIEW_MODEL VIEW_MODEL)
         {

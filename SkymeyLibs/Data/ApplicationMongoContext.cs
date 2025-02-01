@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using MongoDB.EntityFrameworkCore.Extensions;
+using SkymeyLibs.Models.Tables.Bonds;
 using SkymeyLibs.Models.Tables.Posts;
+using SkymeyLibs.Models.Tables.Stocks;
 using SkymeyLibs.Models.Tables.Tokens;
 using SkymeyLibs.Models.User;
 
@@ -20,6 +22,8 @@ namespace SkymeyLibs.Data
         public DbSet<SU_001> SU_001 { get; init; }
         public DbSet<SG_001> SG_001 { get; init; }
         public DbSet<SG_010> SG_010 { get; init; }
+        public DbSet<stock_bonds> stock_bonds { get; init; }
+        public DbSet<stock_stocks> stock_stocks { get; init; }
         public static ApplicationMongoContext Create(IMongoDatabase database) =>
             new(new DbContextOptionsBuilder<ApplicationMongoContext>()
                 .UseMongoDB(database.Client, database.DatabaseNamespace.DatabaseName)
@@ -42,6 +46,8 @@ namespace SkymeyLibs.Data
             modelBuilder.Entity<SU_001>().ToCollection("SU_001");
             modelBuilder.Entity<SG_001>().ToCollection("SG_001");
             modelBuilder.Entity<SG_010>().ToCollection("SG_010");
+            modelBuilder.Entity<stock_stocks>().ToCollection("stock_bonds");
+            modelBuilder.Entity<stock_stocks>().ToCollection("stock_stocks");
             modelBuilder.Entity<TokenList>().ToCollection("crypto_index_page_tokens");
         }
     }
