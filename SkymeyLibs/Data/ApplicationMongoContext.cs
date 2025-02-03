@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using MongoDB.Driver;
 using MongoDB.EntityFrameworkCore.Extensions;
 using SkymeyLibs.Models.Tables.Bonds;
@@ -6,6 +7,8 @@ using SkymeyLibs.Models.Tables.Posts;
 using SkymeyLibs.Models.Tables.Stocks;
 using SkymeyLibs.Models.Tables.Tokens;
 using SkymeyLibs.Models.User;
+using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace SkymeyLibs.Data
 {
@@ -32,6 +35,7 @@ namespace SkymeyLibs.Data
             : base(options)
         {
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

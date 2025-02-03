@@ -20,15 +20,15 @@ namespace SkymeyLibs.Data
 {
     public class MongoPostRepository : IMongoRepository
     {
-        private readonly MongoClient client;
+        //private readonly MongoClient client;
         private readonly ApplicationMongoContext _db;
-        private readonly IOptions<MainSettings> _options;
+        //private readonly IOptions<MainSettings> _options;
 
-        public MongoPostRepository(IOptions<MainSettings> options)
+        public MongoPostRepository(MongoClient client, MongoDatabase db)
         {
-            _options = options;
-            client = new MongoClient(_options.Value.MongoDatabase.DBServer);
-            _db = ApplicationMongoContext.Create(client.GetDatabase(_options.Value.MongoDatabase.DBName));
+            //_options = options;
+            //client = new MongoClient(_options.Value.MongoDatabase.DBServer);
+            _db = ApplicationMongoContext.Create(client.GetDatabase(db.DBName));
         }
         public async Task<IEnumerable<API_TOKEN>> GetTokens()
         {
@@ -135,6 +135,10 @@ namespace SkymeyLibs.Data
                 Console.WriteLine(ex.ToString());
             }
             return HttpStatusCode.OK;
+        }
+        ~MongoPostRepository()
+        {
+
         }
 
         public void Dispose()

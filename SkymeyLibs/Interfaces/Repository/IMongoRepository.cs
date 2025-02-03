@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace SkymeyLibs.Interfaces.Data
 {
-    public interface IMongoRepository: IDisposable
+    public interface IMongoRepository : IDisposable
     {
         Task<HttpStatusCode> CreatePost(POST_VIEW_MODEL VIEW_MODEL);
 
