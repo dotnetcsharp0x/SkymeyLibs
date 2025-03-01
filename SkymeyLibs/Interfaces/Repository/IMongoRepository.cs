@@ -21,6 +21,7 @@ namespace SkymeyLibs.Interfaces.Data
 
         Task<IEnumerable<API_TOKEN>> GetTokens();
         Task<List<TokenList>> GetTokenList();
+        Task<API_TOKEN> GetToken(string slug);
         Task<bool> AddToken(API_TOKEN token);
 
         Task<IEnumerable<stock_bonds>> GetBonds();

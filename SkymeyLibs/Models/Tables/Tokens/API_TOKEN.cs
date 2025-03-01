@@ -19,6 +19,9 @@ namespace SkymeyLibs.Models.Tables.Tokens
         [JsonPropertyName("Symbol")]
         public string? Symbol { get; set; }
 
+        [JsonPropertyName("Slug")]
+        public string? Slug { get; set; }
+
         [JsonPropertyName("Name")]
         public string Name { get; set; }
 

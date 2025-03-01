@@ -21,6 +21,9 @@ namespace SkymeyLibs.Models.Tables.Tokens
         [JsonPropertyName("Name")]
         public string Name { get; set; }
 
+        [JsonPropertyName("Slug")]
+        public string Slug { get; set; }
+
         [JsonPropertyName("Price")]
         public string Price { get; set; }
 

@@ -34,6 +34,10 @@ namespace SkymeyLibs.Data
         {
             return (from i in _db.API_TOKEN select i).AsNoTracking();
         }
+        public async Task<API_TOKEN> GetToken(string slug)
+        {
+            return (from i in _db.API_TOKEN where i.Slug == slug select i).AsNoTracking().FirstOrDefault();
+        }
         public async Task<IEnumerable<stock_bonds>> GetBonds()
         {
             return (from i in _db.stock_bonds select i).AsNoTracking();
@@ -59,6 +63,7 @@ namespace SkymeyLibs.Data
         public async Task<bool> AddToken(API_TOKEN token)
         {
             token._id = ObjectId.GenerateNewId();
+            token.Slug = token.Name.ToLower();
             await _db.API_TOKEN.AddAsync(token);
             await _db.SaveChangesAsync();
             return true;
