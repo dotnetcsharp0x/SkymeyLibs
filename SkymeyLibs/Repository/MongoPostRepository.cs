@@ -30,6 +30,7 @@ namespace SkymeyLibs.Data
             //client = new MongoClient(_options.Value.MongoDatabase.DBServer);
             _db = ApplicationMongoContext.Create(client.GetDatabase(db.DBName));
         }
+        #region Crypto
         public async Task<IEnumerable<API_TOKEN>> GetTokens()
         {
             return (from i in _db.API_TOKEN select i).AsNoTracking();
@@ -38,27 +39,10 @@ namespace SkymeyLibs.Data
         {
             return (from i in _db.API_TOKEN where i.Slug == slug select i).AsNoTracking().FirstOrDefault();
         }
-        public async Task<IEnumerable<stock_bonds>> GetBonds()
-        {
-            return (from i in _db.stock_bonds select i).AsNoTracking();
-        }
-        public async Task<IEnumerable<stock_stocks>> GetStocks()
-        {
-            return (from i in _db.stock_stocks select i).AsNoTracking();
-        }
-        public async Task<IEnumerable<stock_bonds>> GetBondsParams(int skip, int take)
-        {
-            return (from i in _db.stock_bonds select i).Skip(skip).Take(take).AsNoTracking();
-        }
-        public async Task<IEnumerable<stock_stocks>> GetStocksParams(int skip, int take)
-        {
-            return (from i in _db.stock_stocks select i).Skip(skip).Take(take).AsNoTracking();
-        }
         public async Task<List<TokenList>> GetTokenList()
         {
-           
             return await (from i in _db.crypto_index_page_tokens select i).ToListAsync();
-            
+
         }
         public async Task<bool> AddToken(API_TOKEN token)
         {
@@ -69,6 +53,17 @@ namespace SkymeyLibs.Data
             return true;
 
         }
+        #endregion
+
+        #region Bonds
+        public async Task<IEnumerable<stock_bonds>> GetBonds()
+        {
+            return (from i in _db.stock_bonds select i).AsNoTracking();
+        }
+        public async Task<IEnumerable<stock_bonds>> GetBondsParams(int skip, int take)
+        {
+            return (from i in _db.stock_bonds select i).Skip(skip).Take(take).AsNoTracking();
+        }
         public async Task<bool> AddBond(stock_bonds bond)
         {
             bond._id = ObjectId.GenerateNewId();
@@ -76,6 +71,22 @@ namespace SkymeyLibs.Data
             await _db.SaveChangesAsync();
             return true;
 
+        }
+        #endregion
+
+        #region Stocks
+        
+        public async Task<IEnumerable<stock_stocks>> GetStocksParams(int skip, int take)
+        {
+            return (from i in _db.stock_stocks select i).Skip(skip).Take(take).AsNoTracking();
+        }
+        public async Task<stock_stocks> GetStock(string isin)
+        {
+            return (from i in _db.stock_stocks where i.Isin == isin select i).AsNoTracking().FirstOrDefault();
+        }
+        public async Task<IEnumerable<stock_stocks>> GetStocks()
+        {
+            return (from i in _db.stock_stocks select i).AsNoTracking();
         }
         public async Task<bool> AddStock(stock_stocks stock)
         {
@@ -85,6 +96,9 @@ namespace SkymeyLibs.Data
             return true;
 
         }
+        #endregion
+
+        #region Platform
         public async Task<HttpStatusCode> CreatePost(POST_VIEW_MODEL VIEW_MODEL)
         {
             try
@@ -141,6 +155,7 @@ namespace SkymeyLibs.Data
             }
             return HttpStatusCode.OK;
         }
+        #endregion
         ~MongoPostRepository()
         {
 
